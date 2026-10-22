@@ -1,0 +1,215 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ── Brand + semantic tokens ───────────────────────────────────────────────── */
+:root {
+  --bg: #f8f7fc;
+  --fg: #11111b;
+  --muted: #55506b;
+  --subtle: #6e6989;
+  --border: #e5e1f1;
+  --card: #ffffff;
+  --ring: #7c3aed;
+  --shadow-card: 0 1px 2px rgb(17 17 27 / 0.04), 0 12px 32px -20px rgb(76 29 149 / 0.35);
+  --screen-glow: rgb(124 58 237 / 0.16);
+}
+
+.dark {
+  --bg: #0c0c13;
+  --fg: #f4f2ff;
+  --muted: #aba6c4;
+  --subtle: #8f8aa8;
+  --border: #262336;
+  --card: #14121e;
+  --ring: #a78bfa;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 16px 40px -24px rgb(124 58 237 / 0.5);
+  --screen-glow: rgb(167 139 250 / 0.22);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-border: var(--border);
+  --color-card: var(--card);
+  --color-ring: var(--ring);
+
+  --color-primary: #7c3aed;
+  --color-primary-deep: #4c1d95;
+  --color-violet: #a78bfa;
+  --color-lavender: #ede9fe;
+  --color-ink: #11111b;
+  --color-success: #16a34a;
+  --color-warning: #f59e0b;
+  --color-error: #dc2626;
+
+  --font-sans: "IBM Plex Sans Variable", "IBM Plex Sans Arabic", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  [lang="ar"] {
+    font-family: "IBM Plex Sans Arabic", "IBM Plex Sans Variable", ui-sans-serif, system-ui, sans-serif;
+  }
+
+  ::selection {
+    background-color: #ede9fe;
+    color: #2e1065;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  input,
+  textarea,
+  select,
+  button {
+    font: inherit;
+  }
+}
+
+/* ── Layout helpers ───────────────────────────────────────────────────────── */
+@utility container-page {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 76rem;
+  padding-inline: 1rem;
+  @media (width >= 40rem) {
+    padding-inline: 1.5rem;
+  }
+  @media (width >= 64rem) {
+    padding-inline: 2rem;
+  }
+}
+
+@utility surface {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  box-shadow: var(--shadow-card);
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ── Shared motion ────────────────────────────────────────────────────────── */
+@keyframes inno-blink {
+  0%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+  95%,
+  97% {
+    transform: scaleY(0.08);
+  }
+}
+
+@keyframes inno-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes inno-scan {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes inno-pulse-ring {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+@keyframes inno-wave {
+  0%,
+  100% {
+    transform: scaleY(0.35);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes inno-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.animate-float {
+  animation: inno-float 5s ease-in-out infinite;
+}
+
+.skeleton {
+  background: linear-gradient(90deg, color-mix(in srgb, var(--border) 60%, transparent) 25%, color-mix(in srgb, var(--border) 30%, transparent) 37%, color-mix(in srgb, var(--border) 60%, transparent) 63%);
+  background-size: 200% 100%;
+  animation: inno-shimmer 1.4s ease infinite;
+  border-radius: 0.5rem;
+}
+
+/* ── Accessibility ────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+[data-reduced-motion="true"] *,
+[data-reduced-motion="true"] *::before,
+[data-reduced-motion="true"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
